@@ -1,17 +1,17 @@
 import asyncio
-from agents import Agent, RunConfig, Runner, set_tracing_disabled, OpenAIChatCompletionsModel,handoffs  # type: ignore
-from agents.tool import function_tool  # type: ignore
-from openai import AsyncOpenAI  # type: ignore
+from agents import Agent, RunConfig, Runner, set_tracing_disabled, OpenAIChatCompletionsModel,handoffs
+from agents.tool import function_tool 
+from openai import AsyncOpenAI 
 
 # Replace with your actual API key
-OPENAI_MODEL: str = "deepseek/deepseek-chat-v3-0324:free"
-OPENAI_API_KEY: str = "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" 
-BASE_URL: str = "https://openrouter.ai/api/v1"
+GEMINI_MODEL: str = "gemini-2.0-flash"
+GEMINI_API_KEY: str = "AIzaSyB9IT8RMJsrrbIw5w_ux34F_QhVQOsl0J4" 
+BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 
 set_tracing_disabled(disabled=True)
 
-client = AsyncOpenAI(api_key=OPENAI_API_KEY, base_url=BASE_URL)
+client = AsyncOpenAI(api_key=GEMINI_API_KEY, base_url=BASE_URL)
 
 male_agent = Agent(
     name="Male Rishta Assistant",
@@ -40,13 +40,13 @@ rishta_agent = Agent(
     )
 
 # Model
-model = OpenAIChatCompletionsModel(openai_client=client, model=OPENAI_MODEL)
+model = OpenAIChatCompletionsModel(openai_client=client, model=GEMINI_MODEL)
 
 # Main async function
 async def main():
     result = await Runner.run(
         rishta_agent,
-        'im a rich man and i looking for beautiful female to marry',
+        'I\'m looking for a suitable partner. This is my details: name: "Maaz Hassan", age: 15, profession: "Student", location: "Karachi", cast: "Urdu Speaking".Any age,cast or anything just give me the the rishta and dont ask for more info',
         run_config=RunConfig(model=model)
     )
     print(result.final_output)
